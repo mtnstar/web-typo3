@@ -56,11 +56,9 @@ RUN echo "error_reporting = E_ALL" > /usr/local/etc/php/conf.d/error_reporting.i
 RUN echo "display_errors = On" >> /usr/local/etc/php/conf.d/error_reporting.ini
 RUN echo "log_errors = On" >> /usr/local/etc/php/conf.d/error_reporting.ini
 
-USER www-data
-
 RUN cd /var/www/html && \
-    wget -O download.tar.gz https://get.typo3.org/12.4.5 && \
-    echo "2f44780e729ff48b04a07bbffe302d0f3244811c73f7ad0c9d4b93c90d510e79 download.tar.gz" > download.tar.gz.sum && \
+    wget -O download.tar.gz https://get.typo3.org/12.4.7 && \
+    echo "b2d3aea83142dfaf6f5b6f7a615795831849544dee74ffb60c064701740e94bf download.tar.gz" > download.tar.gz.sum && \
     sha256sum -c download.tar.gz.sum && \
     tar -xzf download.tar.gz && \
     rm download.* && \
@@ -74,6 +72,8 @@ RUN cd /var/www/html && \
     mkdir uploads && \
     touch FIRST_INSTALL && \
     chown -R www-data. .
+
+USER www-data
 
 # Configure volumes
 VOLUME /var/www/html/fileadmin
