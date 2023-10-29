@@ -73,6 +73,11 @@ RUN cd /var/www/html && \
     touch FIRST_INSTALL && \
     chown -R www-data. .
 
+RUN echo '#!/bin/bash' > /usr/bin/typo3 && \
+    echo 'TYPO3_BINARY="/var/www/html/typo3/sysext/core/bin/typo3"' >> /usr/bin/typo3 && \
+    echo 'php "$TYPO3_BINARY" "$@"' >> /usr/bin/typo3 && \
+    chmod +x /usr/bin/typo3
+
 USER www-data
 
 # Configure volumes
