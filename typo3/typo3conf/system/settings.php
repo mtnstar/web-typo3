@@ -28,12 +28,22 @@ return [
     'EXTENSIONS' => [
         'backend' => [
             'backendFavicon' => '',
-            'backendLogo' => '',
-            'loginBackgroundImage' => '',
+            'backendLogo' => 'EXT:bootstrap_package/Resources/Public/Images/Backend/backend-logo.svg',
+            'loginBackgroundImage' => 'EXT:bootstrap_package/Resources/Public/Images/Backend/login-background-image.jpg',
             'loginFootnote' => '',
             'loginHighlightColor' => '',
-            'loginLogo' => '',
+            'loginLogo' => 'EXT:bootstrap_package/Resources/Public/Images/Backend/login-logo.svg',
             'loginLogoAlt' => '',
+        ],
+        'bootstrap_package' => [
+            'disableCssProcessing' => '0',
+            'disableGoogleFontCaching' => '0',
+            'disablePageTsBackendLayouts' => '0',
+            'disablePageTsContentElements' => '0',
+            'disablePageTsRTE' => '0',
+            'disablePageTsTCADefaults' => '0',
+            'disablePageTsTCEFORM' => '0',
+            'disablePageTsTCEMAIN' => '0',
         ],
         'extensionmanager' => [
             'automaticInstallation' => '1',

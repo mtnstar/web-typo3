@@ -2,3 +2,4 @@ typo3/uploads
 typo3/fileadmin/
 /tmp
 /bin/secret-envs.sh
+typo3/typo3conf/ext/

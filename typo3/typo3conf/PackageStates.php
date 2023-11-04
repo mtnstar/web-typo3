@@ -89,6 +89,12 @@ return [
         'viewpage' => [
             'packagePath' => 'typo3/sysext/viewpage/',
         ],
+        'bootstrap_package' => [
+            'packagePath' => 'typo3conf/ext/bootstrap_package/',
+        ],
+        'mountain_star_bootstrap_template' => [
+            'packagePath' => 'typo3conf/ext/mountain_star_bootstrap_template/',
+        ],
     ],
     'version' => 5,
 ];
