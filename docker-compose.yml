@@ -38,6 +38,8 @@ services:
       - "MYSQL_PASSWORD=password"
       - "MYSQL_DATABASE=typo3"
       - "MYSQL_ROOT_PASSWORD=password"
+    volumes:
+      - database:/var/lib/mysql
     networks:
       - backend
 volumes:
