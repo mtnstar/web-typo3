@@ -35,6 +35,10 @@ return [
             'loginLogo' => 'EXT:bootstrap_package/Resources/Public/Images/Backend/login-logo.svg',
             'loginLogoAlt' => '',
         ],
+        'blog' => [
+            'disablePageLayoutHeader' => '0',
+            'enableGravatarProxy' => '0',
+        ],
         'bootstrap_package' => [
             'disableCssProcessing' => '0',
             'disableGoogleFontCaching' => '0',

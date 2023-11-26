@@ -95,6 +95,9 @@ return [
         'mountain_star_bootstrap_template' => [
             'packagePath' => 'typo3conf/ext/mountain_star_bootstrap_template/',
         ],
+        'blog' => [
+            'packagePath' => 'typo3conf/ext/blog/',
+        ],
     ],
     'version' => 5,
 ];
