@@ -1,0 +1,7 @@
+#!/bin/bash
+
+current_dir="$(cd "$(dirname "$0")" && pwd)"
+
+source $current_dir/secret-envs.sh
+
+ssh $REMOTE_SSH_USER@$REMOTE_SSH_SERVER
