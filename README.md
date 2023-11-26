@@ -2,6 +2,24 @@
 
 work in progress ...
 
+## Environment
+
+### Remote hoster
+
+is where:
+
+* the website is running
+* all the content is managed (crud)
+
+### Local dev setup
+
+is where:
+
+* typo3 source is managed
+* extensions are installed (typo3 backend)
+* is done experimenting with extensions and content
+* the custom bootstrap extension is tested
+
 ## Setup
 
 1. clone this repo including submodules
@@ -12,7 +30,7 @@ work in progress ...
 1. run setup wizard at remote hoster (https://example.com/typo3)
 1. run `bin/remote-fetch`
 
-you should now be able to access typo3 with the same configuration and content locally at http://localhost:4242 and remotely https://example.com/typo3
+you should now be able to access typo3 with the same configuration and content locally at http://localhost:4242/typo3 and remotely https://example.com/typo3
 
 ## Pull remote content
 
