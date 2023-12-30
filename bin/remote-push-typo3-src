@@ -1,0 +1,28 @@
+#!/bin/bash
+
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+dist_dir="$script_dir/../tmp/dist"
+
+source $script_dir/secret-envs.sh
+
+rsync_excludes="--exclude='fileadmin' --exclude='typo3temp' --exclude='uploads'"
+
+docker-compose exec typo3 bash -c "rm -rf /dist/*"
+docker-compose exec typo3 bash -c "shopt -s dotglob && rsync -av $rsync_excludes /var/www/html/* /dist/ && shopt -u dotglob"
+
+escaped_install_tool_pw=$(printf '%s\n' "$REMOTE_TYPO3_INSTALL_TOOL_PASSWORD" | sed 's/[\/&]/\\&/g')
+sed -i "s/installToolPassword' => '.*'/installToolPassword' => '$escaped_install_tool_pw'/" "$dist_dir/typo3conf/system/settings.php"
+sed -i "s/dbname' => '.*'/dbname' => '$REMOTE_MYSQL_DB'/" "$dist_dir/typo3conf/system/settings.php"
+sed -i "s/host' => '.*'/host' => '$REMOTE_MYSQL_HOST'/" "$dist_dir/typo3conf/system/settings.php"
+escaped_mysql_password=$(printf '%s\n' "$REMOTE_MYSQL_PASSWORD" | sed 's/[\/&]/\\&/g')
+sed -i "s/password' => '.*'/password' => '$escaped_mysql_password'/" "$dist_dir/typo3conf/system/settings.php"
+sed -i "s/user' => '.*'/user' => '$REMOTE_MYSQL_USER'/" "$dist_dir/typo3conf/system/settings.php"
+sed -i "s/encryptionKey' => '.*'/encryptionKey' => '$REMOTE_TYPO3_ENCRYPTION_KEY'/" "$dist_dir/typo3conf/system/settings.php"
+
+ASSERT_DIRECTORIES_CMD="mkdir -p $REMOTE_VHOST_PATH && \
+  mkdir -p $REMOTE_VHOST_PATH/{fileadmin,typo3temp,uploads}"
+ssh $REMOTE_SSH_USER@$REMOTE_SSH_SERVER "$ASSERT_DIRECTORIES_CMD"
+
+shopt -s dotglob
+rsync -av --delete $rsync_excludes -e ssh $dist_dir/* $REMOTE_SSH_USER@$REMOTE_SSH_SERVER:$REMOTE_VHOST_PATH
+shopt -u dotglob
