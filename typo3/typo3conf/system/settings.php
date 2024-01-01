@@ -2,7 +2,7 @@
 return [
     'BE' => [
         'debug' => false,
-        'installToolPassword' => '$argon2i$v=19$m=65536,t=16,p=1$MzNNSUguR0kvd0VjWXNCdA$ybOHIsX16ngF1DcsYUJ1eaBrGoDfbwIMU+i3YtOYR+w',
+        'installToolPassword' => '$argon2i$v=19$m=65536,t=16,p=1$MzNNSUguR0kvd0VjWXNCdA$ybOHIsX16ngF1DcsYUJ1eaBrGoDfbwIMU+i3YtOYR+w', # typo3_install_tool_password
         'passwordHashing' => [
             'className' => 'TYPO3\\CMS\\Core\\Crypto\\PasswordHashing\\Argon2iPasswordHash',
             'options' => [],
@@ -12,16 +12,16 @@ return [
         'Connections' => [
             'Default' => [
                 'charset' => 'utf8mb4',
-                'dbname' => 'typo3',
+                'dbname' => 'typo3', # mysql_db
                 'driver' => 'mysqli',
-                'host' => 'database',
-                'password' => 'password',
+                'host' => 'database', # mysql_host
+                'password' => 'password', # mysql_password
                 'port' => 3306,
                 'tableoptions' => [
                     'charset' => 'utf8mb4',
                     'collate' => 'utf8mb4_unicode_ci',
                 ],
-                'user' => 'typo3',
+                'user' => 'typo3', # mysql_user
             ],
         ],
     ],
@@ -117,7 +117,7 @@ return [
         ],
         'devIPmask' => '',
         'displayErrors' => 0,
-        'encryptionKey' => 'd5ddcc5ed574605c08629d1303fc833c264fb73313b0d2b969fa97d586ec7addb40cfa845f01f404ee334c9511846163',
+        'encryptionKey' => 'd5ddcc5ed574605c08629d1303fc833c264fb73313b0d2b969fa97d586ec7addb40cfa845f01f404ee334c9511846163', # typo3_encryption_key
         'exceptionalErrors' => 4096,
         'features' => [
             'security.backend.enforceContentSecurityPolicy' => true,
