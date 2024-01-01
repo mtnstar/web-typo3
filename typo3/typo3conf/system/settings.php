@@ -65,6 +65,13 @@ return [
             'options' => [],
         ],
     ],
+    'GFX' => [
+        'processor' => 'GraphicsMagick',
+        'processor_allowTemporaryMasksAsPng' => false,
+        'processor_effects' => false,
+        'processor_enabled' => true,
+        'processor_path' => '/usr/bin/',
+    ],
     'LOG' => [
         'TYPO3' => [
             'CMS' => [
