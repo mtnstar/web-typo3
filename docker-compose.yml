@@ -26,6 +26,7 @@ services:
       - ./typo3/typo3conf:/var/www/html/typo3conf
       - ./typo3/uploads:/var/www/html/uploads
       - typo3temp:/var/www/html/typo3temp
+      - ./tmp/dist:/dist
     networks:
       - backend
   database:
