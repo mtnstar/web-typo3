@@ -1,0 +1,17 @@
+#!/bin/bash
+
+current_dir="$(cd "$(dirname "$0")" && pwd)"
+
+source $current_dir/secret-envs.sh
+
+MYSQL_BKP_CMD="mysqldump -h $REMOTE_MYSQL_HOST \
+               -u $REMOTE_MYSQL_USER \
+               -p'$REMOTE_MYSQL_PASSWORD' $REMOTE_MYSQL_DB | \
+               gzip > tmp/typo3.sql.gz"
+
+ssh $REMOTE_SSH_USER@$REMOTE_SSH_SERVER "$MYSQL_BKP_CMD"
+scp $REMOTE_SSH_USER@$REMOTE_SSH_SERVER:/tmp/typo3.sql.gz $current_dir/../tmp
+
+zcat $current_dir/../tmp/typo3.sql.gz | docker-compose exec -T database mysql -u typo3 -ppassword typo3
+
+# fetch file contents
