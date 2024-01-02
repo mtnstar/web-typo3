@@ -1,0 +1,7 @@
+#!/bin/bash
+
+current_dir="$(cd "$(dirname "$0")" && pwd)"
+
+source $current_dir/secret-envs.sh
+
+ssh -t $REMOTE_SSH_USER@$REMOTE_SSH_SERVER  "cd $REMOTE_VHOST_PATH; ./typo3/sysext/core/bin/typo3 cache:flush"
