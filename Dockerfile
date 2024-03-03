@@ -58,8 +58,8 @@ RUN echo "display_errors = On" >> /usr/local/etc/php/conf.d/error_reporting.ini
 RUN echo "log_errors = On" >> /usr/local/etc/php/conf.d/error_reporting.ini
 
 RUN cd /var/www/html && \
-    wget -O download.tar.gz https://get.typo3.org/12.4.9 && \
-    echo "46f6333e37b439220da6ff77ebac525677d17efcdda7ca81899ea4e2b0ccce46 download.tar.gz" > download.tar.gz.sum && \
+    wget -O download.tar.gz https://get.typo3.org/12.4.11 && \
+    echo "a93bb3e8ceae5f00c77f985438dd948d2a33426ccfd7c2e0e5706325c43533a3 download.tar.gz" > download.tar.gz.sum && \
     sha256sum -c download.tar.gz.sum && \
     tar -xzf download.tar.gz && \
     rm download.* && \
