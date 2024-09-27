@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 script_dir="$(cd "$(dirname "$0")" && pwd)"
 
@@ -13,7 +14,7 @@ MYSQL_BKP_CMD="mysqldump -h $REMOTE_MYSQL_HOST \
 ssh $REMOTE_SSH_USER@$REMOTE_SSH_SERVER "$MYSQL_BKP_CMD"
 scp $REMOTE_SSH_USER@$REMOTE_SSH_SERVER:/tmp/typo3.sql.gz $script_dir/../tmp
 
-zcat $script_dir/../tmp/typo3.sql.gz | docker-compose exec -T database mysql -u typo3 -ppassword typo3
+zcat $script_dir/../tmp/typo3.sql.gz | docker compose exec -T database mysql -u typo3 -ppassword typo3
 
 # fetch file contents
 rsync -av --delete -e ssh $REMOTE_SSH_USER@$REMOTE_SSH_SERVER:$REMOTE_VHOST_PATH/fileadmin/* $fileadmin_dir
