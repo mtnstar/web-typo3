@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+
+source $script_dir/secret-envs.sh
+local_ext_dir="$script_dir/../typo3/typo3conf/ext"
+
+# fetch remote extensions
+rsync -av --delete -e ssh $REMOTE_SSH_USER@$REMOTE_SSH_SERVER:$REMOTE_VHOST_PATH/typo3conf/ext/* $local_ext_dir
