@@ -1,7 +1,5 @@
 # Typo3 Website dev setup
 
-work in progress ...
-
 ## Environment
 
 ### Remote hoster
@@ -25,7 +23,7 @@ is where:
 1. clone this repo including submodules
 1. Create mysql db and user at remote hoster
 1. copy `bin/secret-envs.sh.example` to `bin/secret-envs.sh` and change values to fit your environment
-1. run `docker-compose up -d` to start local containers
+1. run `podman compose up -d` to start local containers
 1. run `bin/remote-push-typo3`
 1. run setup wizard at remote hoster (https://example.com/typo3)
 1. run `bin/remote-fetch`
