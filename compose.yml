@@ -11,6 +11,8 @@ services:
       - ./tmp/dist:/dist
     networks:
       - backend
+    sysctls:
+      - net.ipv4.ip_unprivileged_port_start=0
   database:
     image: mysql:8.0
     command:
