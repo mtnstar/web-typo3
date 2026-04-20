@@ -53,6 +53,10 @@ return [
             'automaticInstallation' => '1',
             'offlineMode' => '0',
         ],
+        'redirects' => [
+            'showCheckIntegrityInfoInReports' => '1',
+            'showCheckIntegrityInfoInReportsSeconds' => '86400',
+        ],
     ],
     'FE' => [
         'cacheHash' => [
@@ -67,7 +71,6 @@ return [
     ],
     'GFX' => [
         'processor' => 'GraphicsMagick',
-        'processor_allowTemporaryMasksAsPng' => false,
         'processor_colorspace' => '',
         'processor_effects' => false,
         'processor_enabled' => true,
@@ -129,7 +132,6 @@ return [
         'exceptionalErrors' => 4096,
         'features' => [
             'security.backend.enforceContentSecurityPolicy' => true,
-            'security.usePasswordPolicyForFrontendUsers' => true,
         ],
         'sitename' => 'Mountain Star',
         'systemMaintainers' => [
