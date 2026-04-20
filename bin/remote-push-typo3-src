@@ -8,8 +8,8 @@ source $script_dir/secret-envs.sh
 
 rsync_excludes="--exclude='fileadmin' --exclude='typo3temp' --exclude='uploads'"
 
-podman compose exec typo3 bash -c "rm -rf /dist/*"
-podman compose exec typo3 bash -c "shopt -s dotglob && rsync -av $rsync_excludes /var/www/html/* /dist/ && shopt -u dotglob"
+podman compose exec --user root typo3 bash -c "rm -rf /dist/*"
+podman compose exec --user root typo3 bash -c "shopt -s dotglob && rsync -av $rsync_excludes /var/www/html/* /dist/ && shopt -u dotglob"
 
 escaped_install_tool_pw=$(printf '%s\n' "$REMOTE_TYPO3_INSTALL_TOOL_PASSWORD" | sed 's/[\/&]/\\&/g')
 sed -i "s/installToolPassword' => '.*'/installToolPassword' => '$escaped_install_tool_pw'/" "$dist_dir/typo3conf/system/settings.php"
