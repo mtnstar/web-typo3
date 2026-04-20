@@ -80,9 +80,6 @@ return [
         'sys_note' => [
             'packagePath' => 'typo3/sysext/sys_note/',
         ],
-        't3editor' => [
-            'packagePath' => 'typo3/sysext/t3editor/',
-        ],
         'tstemplate' => [
             'packagePath' => 'typo3/sysext/tstemplate/',
         ],
