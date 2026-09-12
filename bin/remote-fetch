@@ -18,3 +18,7 @@ zcat $script_dir/../tmp/typo3.sql.gz | docker compose exec -T database mysql -u 
 
 # fetch file contents
 rsync -av --delete -e ssh $REMOTE_SSH_USER@$REMOTE_SSH_SERVER:$REMOTE_VHOST_PATH/fileadmin/* $fileadmin_dir
+
+# the container runs as www-data, so it needs write access to the fetched
+# files to be able to create processed images
+chmod -R a+rwX "$fileadmin_dir"
