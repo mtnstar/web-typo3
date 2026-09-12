@@ -70,7 +70,7 @@ return [
         ],
     ],
     'GFX' => [
-        'processor' => 'GraphicsMagick',
+        'processor' => 'ImageMagick',
         'processor_colorspace' => '',
         'processor_effects' => false,
         'processor_enabled' => true,
