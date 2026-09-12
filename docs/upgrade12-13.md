@@ -27,7 +27,7 @@ Upgrade from TYPO3 12.4.41 to 13.4.28.
 ### 1. Rebuild the container
 
 ```bash
-podman compose down && podman compose up --build -d
+docker compose down && docker compose up --build -d
 ```
 
 ### 2. Fix the sys_refindex table
@@ -65,9 +65,9 @@ CREATE TABLE sys_refindex (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
-Via podman:
+Via docker:
 ```bash
-podman compose exec database mysql -u typo3 -ppassword typo3
+docker compose exec database mysql -u typo3 -ppassword typo3
 ```
 
 ### 3. Make settings.php temporarily writable

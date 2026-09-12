@@ -1,3 +1,3 @@
 #!/bin/bash
 
-podman compose exec typo3 typo3 cache:flush
+docker compose exec typo3 typo3 cache:flush
