@@ -41,9 +41,6 @@ return [
         'redirects' => [
             'packagePath' => 'typo3/sysext/redirects/',
         ],
-        'setup' => [
-            'packagePath' => 'typo3/sysext/setup/',
-        ],
         'rte_ckeditor' => [
             'packagePath' => 'typo3/sysext/rte_ckeditor/',
         ],

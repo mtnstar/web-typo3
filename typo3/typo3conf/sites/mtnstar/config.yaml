@@ -1,11 +1,14 @@
 imports:
   - { resource: 'EXT:blog/Configuration/Routes/Default.yaml' }
 base: /
+dependencies:
+  - mountain-star/template
+  - blog/integration
 languages:
   -
     title: English
     enabled: true
-    locale: en-US
+    locale: en_US.UTF-8
     hreflang: ''
     base: /
     websiteTitle: ''

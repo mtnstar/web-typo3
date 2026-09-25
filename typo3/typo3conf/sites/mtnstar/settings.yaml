@@ -1,0 +1,88 @@
+# blog: page uids of this site
+# plus meta/list/comment settings pinned to their blog 13 defaults, which blog 14 changed
+plugin:
+  tx_blog:
+    settings:
+      blogUid: 13
+      categoryUid: 23
+      tagUid: 22
+      authorUid: 24
+      archiveUid: 25
+      storagePid: 19
+      meta:
+        postheader:
+          elements:
+            authors:
+              avatar:
+                enable: false
+            categories:
+              enable: false
+            tags:
+              enable: false
+        postfooter:
+          elements:
+            authors:
+              enable: false
+              avatar:
+                enable: false
+            published:
+              enable: false
+            comments:
+              enable: false
+        listheader:
+          elements:
+            authors:
+              enable: false
+              avatar:
+                enable: false
+            categories:
+              enable: false
+            tags:
+              enable: false
+        listfooter:
+          elements:
+            authors:
+              avatar:
+                enable: false
+            categories:
+              enable: false
+            published:
+              enable: false
+            comments:
+              enable: false
+        teaserheader:
+          elements:
+            authors:
+              avatar:
+                enable: false
+            categories:
+              enable: false
+            tags:
+              enable: false
+            comments:
+              enable: false
+        teaserfooter:
+          enable: false
+          elements:
+            authors:
+              enable: false
+              avatar:
+                enable: false
+            categories:
+              enable: false
+            tags:
+              enable: false
+            published:
+              enable: false
+            comments:
+              enable: false
+      lists:
+        posts:
+          maximumDisplayedItems: 0
+      widgets:
+        tags:
+          limit: 20
+      comments:
+        features:
+          urls: false
+        respectPostLanguageId: 1

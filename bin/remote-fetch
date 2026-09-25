@@ -14,7 +14,8 @@ MYSQL_BKP_CMD="mysqldump -h $REMOTE_MYSQL_HOST \
 ssh $REMOTE_SSH_USER@$REMOTE_SSH_SERVER "$MYSQL_BKP_CMD"
 scp $REMOTE_SSH_USER@$REMOTE_SSH_SERVER:/tmp/typo3.sql.gz $script_dir/../tmp
 
-zcat $script_dir/../tmp/typo3.sql.gz | docker compose exec -T database mysql -u typo3 -ppassword typo3
+# newer mariadb-dump versions start with a "sandbox mode" line the MySQL client can't parse
+zcat $script_dir/../tmp/typo3.sql.gz | sed '1{/enable the sandbox mode/d}' | docker compose exec -T database mysql -u typo3 -ppassword typo3
 
 # fetch file contents
 rsync -av --delete -e ssh $REMOTE_SSH_USER@$REMOTE_SSH_SERVER:$REMOTE_VHOST_PATH/fileadmin/* $fileadmin_dir

@@ -41,7 +41,7 @@ RUN apt-get update && \
 # Configure extensions
     docker-php-ext-configure gd --with-libdir=/usr/include/ --with-jpeg --with-freetype && \
     docker-php-ext-install -j$(nproc) mysqli soap gd zip opcache intl pgsql pdo_pgsql && \
-    echo 'always_populate_raw_post_data = -1\nmax_execution_time = 240\nmax_input_vars = 1500\nupload_max_filesize = 32M\npost_max_size = 32M' > /usr/local/etc/php/conf.d/typo3.ini && \
+    echo 'always_populate_raw_post_data = -1\nmemory_limit = 512M\nmax_execution_time = 240\nmax_input_vars = 1500\nupload_max_filesize = 32M\npost_max_size = 32M' > /usr/local/etc/php/conf.d/typo3.ini && \
 # Configure Apache as needed
     a2enmod rewrite && \
 # Generate the locale used by the site configuration
@@ -62,8 +62,8 @@ RUN echo "display_errors = On" >> /usr/local/etc/php/conf.d/error_reporting.ini
 RUN echo "log_errors = On" >> /usr/local/etc/php/conf.d/error_reporting.ini
 
 RUN cd /var/www/html && \
-    wget -O download.tar.gz https://get.typo3.org/13.4.35 && \
-    echo "dd2d79db211cb8954a5f3a1f0cf2eb27a4a9057387e012fdd0bf779901f983e3 download.tar.gz" > download.tar.gz.sum && \
+    wget -O download.tar.gz https://get.typo3.org/14.3.7 && \
+    echo "1c91921b56615fb961ef37840abb9013e90e95a42f2ba83b61455732be0a353f download.tar.gz" > download.tar.gz.sum && \
     sha256sum -c download.tar.gz.sum && \
     tar -xzf download.tar.gz && \
     rm download.* && \
