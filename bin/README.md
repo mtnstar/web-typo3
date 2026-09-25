@@ -46,7 +46,9 @@ time per page.
 Pulls the remote content into the local setup:
 
 1. dumps the remote database and imports it into the local `database`
-   container (overwrites the local database)
+   container (overwrites the local database). The dump is kept in
+   `tmp/typo3.sql.gz`; its MariaDB-only "sandbox mode" first line is stripped,
+   since the local MySQL client rejects it
 2. rsyncs the remote `fileadmin/` into `typo3/fileadmin/` (`--delete`, local
    files missing on the remote are removed)
 3. makes `fileadmin` world-writable, so the container's `www-data` can create
@@ -89,6 +91,27 @@ Opens an interactive login shell on the remote, in `REMOTE_VHOST_PATH`.
 ### `remote-flush-cache`
 
 Flushes all TYPO3 caches on the remote.
+
+### `remote-backup-db`
+
+Dumps the remote database into `tmp/backup-<timestamp>.sql.gz`, without
+touching the local database (unlike `remote-fetch`). Fails if the dump is
+incomplete. Run it before upgrades or bulk changes on the remote.
+
+### `remote-mysql`
+
+Runs the SQL from stdin against the remote database:
+
+```sh
+bin/remote-mysql < fix.sql
+bin/remote-mysql <<'SQL'
+UPDATE pages SET hidden = 1 WHERE uid = 42;
+SQL
+```
+
+`remote-backup-db` and `remote-mysql` pass `REMOTE_MYSQL_PASSWORD` to the
+remote shell quoted with `printf %q`, so special characters like `&` or `'` in
+the password are safe. Prefer them over ad-hoc `ssh … mysql -p'…'` commands.
 
 ### `remote-warmup`
 
