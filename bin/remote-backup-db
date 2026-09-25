@@ -1,0 +1,20 @@
+#!/bin/bash
+set -eo pipefail
+
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+
+source $script_dir/secret-envs.sh
+
+backup_file="$script_dir/../tmp/backup-$(date +%Y%m%d-%H%M%S).sql.gz"
+
+# %q quotes the password for the remote shell, so characters like & or ' survive
+MYSQL_BKP_CMD="mysqldump -h $REMOTE_MYSQL_HOST \
+               -u $REMOTE_MYSQL_USER \
+               -p$(printf '%q' "$REMOTE_MYSQL_PASSWORD") $REMOTE_MYSQL_DB | \
+               gzip"
+
+ssh $REMOTE_SSH_USER@$REMOTE_SSH_SERVER "$MYSQL_BKP_CMD" > "$backup_file"
+
+# an empty or truncated dump has no completion marker
+zcat "$backup_file" | tail -n 1 | grep -q "Dump completed" || { echo "backup incomplete: $backup_file" >&2; exit 1; }
+echo "backup written to $backup_file"

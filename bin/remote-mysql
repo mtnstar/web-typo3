@@ -1,0 +1,12 @@
+#!/bin/bash
+# runs the SQL from stdin against the remote database, e.g. bin/remote-mysql < fix.sql
+set -e
+
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+
+source $script_dir/secret-envs.sh
+
+# %q quotes the password for the remote shell, so characters like & or ' survive
+ssh $REMOTE_SSH_USER@$REMOTE_SSH_SERVER "mysql -h $REMOTE_MYSQL_HOST \
+    -u $REMOTE_MYSQL_USER \
+    -p$(printf '%q' "$REMOTE_MYSQL_PASSWORD") $REMOTE_MYSQL_DB"
