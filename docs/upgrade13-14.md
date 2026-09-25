@@ -139,7 +139,16 @@ repo, and the custom extension changes in its own repository.
 
 The site is broken between step 1 and step 2, so run them back to back.
 
-### 0. Check the PHP memory limit on remote
+### 0. Back up the remote database
+
+```bash
+bin/remote-backup-db
+```
+
+Writes `tmp/backup-<timestamp>.sql.gz` — the way back if anything goes wrong. (Don't use
+`bin/remote-fetch` for this: it also overwrites the upgraded local database.)
+
+### 0b. Check the PHP memory limit on remote
 
 TYPO3 14 needs `memory_limit` ≥ 256M (512M recommended); v13 got by with 128M. Building the TCA
 schema cache otherwise dies with "Allowed memory size of 134217728 bytes exhausted" in
@@ -154,8 +163,11 @@ bin/remote-push-typo3-src
 ### 2. Remove the obsolete sys_template records and migrate blog plugins on remote
 
 ```bash
-source bin/secret-envs.sh
-ssh $REMOTE_SSH_USER@$REMOTE_SSH_SERVER "mysql -h $REMOTE_MYSQL_HOST -u $REMOTE_MYSQL_USER -p'$REMOTE_MYSQL_PASSWORD' $REMOTE_MYSQL_DB -e \"UPDATE sys_template SET deleted = 1 WHERE uid IN (3, 4); UPDATE pages SET tsconfig_includes = '' WHERE uid = 1; UPDATE tt_content SET CType = list_type, list_type = '' WHERE CType = 'list' AND list_type LIKE 'blog\\\\_%';\""
+bin/remote-mysql <<'SQL'
+UPDATE sys_template SET deleted = 1 WHERE uid IN (3, 4);
+UPDATE pages SET tsconfig_includes = '' WHERE uid = 1;
+UPDATE tt_content SET CType = list_type, list_type = '' WHERE CType = 'list' AND list_type LIKE 'blog\\_%';
+SQL
 ```
 
 ### 3. Make settings.php temporarily writable on remote
