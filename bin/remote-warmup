@@ -1,0 +1,41 @@
+#!/bin/bash
+set -e
+
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+cd "$script_dir/.."
+
+source "$script_dir/secret-envs.sh"
+
+base_url="${REMOTE_BASE_URL:-$1}"
+if [ -z "$base_url" ]; then
+  echo "set REMOTE_BASE_URL in bin/secret-envs.sh or pass it:" >&2
+  echo "  $0 https://example.com" >&2
+  exit 1
+fi
+base_url="${base_url%/}"
+
+slugs="tmp/slugs.txt"
+remote_mysql="mysql -h $REMOTE_MYSQL_HOST -u $REMOTE_MYSQL_USER -p'$REMOTE_MYSQL_PASSWORD' $REMOTE_MYSQL_DB"
+
+# doktype 1 = standard page, 137 = blog post
+ssh "$REMOTE_SSH_USER@$REMOTE_SSH_SERVER" "$remote_mysql -N -B" > "$slugs" <<'SQL'
+SELECT slug FROM pages
+ WHERE deleted = 0 AND hidden = 0 AND slug <> ''
+   AND doktype IN (1, 137)
+ ORDER BY uid;
+SQL
+
+echo "warming $(wc -l < "$slugs") pages on $base_url"
+
+# rendering a page makes TYPO3 create every processed image it needs, so a
+# single request per page is enough to take the wait away from visitors
+while read -r slug; do
+  printf '%-52s ' "$slug"
+  rc=0
+  out=$(curl -sS -o /dev/null -w '%{http_code} %{time_total}s' "$base_url$slug" 2>&1) || rc=$?
+  if [ "$rc" -ne 0 ]; then
+    echo "curl failed (exit $rc): $out"
+  else
+    echo "$out"
+  fi
+done < "$slugs"

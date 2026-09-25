@@ -1,0 +1,22 @@
+#!/bin/bash
+set -e
+
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+cd "$script_dir/.."
+
+source "$script_dir/secret-envs.sh"
+
+fileadmin_dir="typo3/fileadmin"
+target="$REMOTE_SSH_USER@$REMOTE_SSH_SERVER:$REMOTE_VHOST_PATH/fileadmin/"
+
+# _processed_ holds derived images only, the remote regenerates them on demand.
+# an array keeps the excludes intact, a quoted string would reach rsync with
+# the quotes still attached and silently match nothing.
+rsync_opts=(-av --delete --exclude '_processed_' -e ssh)
+
+if [ "$1" != "--apply" ]; then
+  rsync_opts+=(--dry-run)
+  echo "dry run, nothing is transferred. run with --apply to sync for real"
+fi
+
+rsync "${rsync_opts[@]}" "$fileadmin_dir/" "$target"

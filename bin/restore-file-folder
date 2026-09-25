@@ -1,0 +1,41 @@
+#!/bin/bash
+set -e
+
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+cd "$script_dir/.."
+
+src_env="$script_dir/secret-envs.sh.netzone"
+dst_env="$script_dir/secret-envs.sh"
+out="tmp/file-folder.sql"
+
+source "$src_env"
+src_ssh="$REMOTE_SSH_USER@$REMOTE_SSH_SERVER"
+src_mysql="mysql -h $REMOTE_MYSQL_HOST -u $REMOTE_MYSQL_USER -p'$REMOTE_MYSQL_PASSWORD' $REMOTE_MYSQL_DB"
+
+source "$dst_env"
+dst_ssh="$REMOTE_SSH_USER@$REMOTE_SSH_SERVER"
+dst_mysql="mysql -h $REMOTE_MYSQL_HOST -u $REMOTE_MYSQL_USER -p'$REMOTE_MYSQL_PASSWORD' $REMOTE_MYSQL_DB"
+
+# read the folder references from the old hoster and turn them into updates.
+# QUOTE() does the escaping, the file_folder='' condition makes this safe to
+# re-run and stops it from overwriting anything edited since the move.
+ssh "$src_ssh" "$src_mysql -N -B" > "$out" <<'SQL'
+SELECT CONCAT('UPDATE tt_content SET file_folder=', QUOTE(file_folder),
+              ' WHERE uid=', uid, ' AND file_folder=', QUOTE(''), ';')
+  FROM tt_content
+ WHERE file_folder <> '' AND deleted = 0;
+SQL
+
+echo "generated $(wc -l < "$out") updates in $out"
+
+if [ "$1" != "--apply" ]; then
+  echo "review them, then run: $0 --apply"
+  exit 0
+fi
+
+ssh "$dst_ssh" "$dst_mysql" < "$out"
+
+ssh "$dst_ssh" "$dst_mysql -N -B" <<'SQL'
+SELECT CONCAT('rows with a file_folder now: ', COUNT(*))
+  FROM tt_content WHERE file_folder <> '';
+SQL

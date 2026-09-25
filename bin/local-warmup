@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+cd "$script_dir/.."
+
+base_url="http://localhost:4242"
+query="SELECT slug FROM pages WHERE doktype=137 AND deleted=0 AND hidden=0 ORDER BY uid"
+
+# render every blog post once, so TYPO3 generates the processed images
+docker compose exec -T database mysql -N -u typo3 -ppassword typo3 -e "$query" 2>/dev/null |
+  while read -r slug; do
+    printf '%-52s ' "$slug"
+    curl -s -o /dev/null -w '%{http_code} %{time_total}s\n' "$base_url$slug"
+  done
