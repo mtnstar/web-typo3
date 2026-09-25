@@ -1,3 +1,5 @@
+imports:
+  - { resource: 'EXT:blog/Configuration/Routes/Default.yaml' }
 base: /
 languages:
   -
