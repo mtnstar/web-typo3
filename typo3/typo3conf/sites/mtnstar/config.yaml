@@ -17,3 +17,7 @@ languages:
     languageId: 0
 rootPageId: 1
 websiteTitle: 'Mountain Star'
+settings:
+  redirects:
+    autoUpdateSlugs: false
+    autoCreateRedirects: false
